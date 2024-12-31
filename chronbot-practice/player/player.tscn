@@ -123,7 +123,7 @@ animations = [{
 radius = 11.0
 height = 40.0
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="CharacterBody2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
