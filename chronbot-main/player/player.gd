@@ -12,6 +12,8 @@ var current_state: State = State.Idle
 func _ready():
 	current_state = State.Idle
 
+func print_state(state: State) -> void:
+	print("State: ", State.keys()[current_state])
 
 func _physics_process(delta: float) -> void:
 	player_falling(delta)
@@ -30,6 +32,7 @@ func player_falling(delta: float) -> void:
 func player_idle(delta: float) -> void:
 	if is_on_floor():
 		current_state = State.Idle
+		print_state(current_state)
 
 
 func player_run(delta: float) -> void:
@@ -49,6 +52,7 @@ func player_run(delta: float) -> void:
 	
 	if direction != 0:
 		current_state = State.Run
+		print_state(current_state)
 
 
 
