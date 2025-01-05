@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=4 uid="uid://mbc3ngcpubag"]
+[gd_scene load_steps=5 format=4 uid="uid://mbc3ngcpubag"]
 
 [ext_resource type="Texture2D" uid="uid://bjwl3aw11exmu" path="res://assets/tilesets/tilesets.png" id="1_fbvmq"]
 [ext_resource type="PackedScene" uid="uid://cihnso23gcp8c" path="res://player/player.tscn" id="2_eoxu3"]
-[ext_resource type="Script" path="res://player/player.gd" id="3_dfxnf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mu5kt"]
 texture = ExtResource("1_fbvmq")
@@ -123,6 +122,5 @@ tile_set = SubResource("TileSet_sm7x3")
 
 [node name="Player" parent="." instance=ExtResource("2_eoxu3")]
 position = Vector2(232, -369)
-script = ExtResource("3_dfxnf")
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
