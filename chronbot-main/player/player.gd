@@ -4,13 +4,14 @@ extends CharacterBody2D
 
 const GRAVITY = 1000
 const SPEED = 300
+const JUMP = -300
+const JUMP_HORIZONTAL = 300
 
-enum State { Idle, Run }
+
+enum State { Idle, Run, Jump }
 
 var current_state: State = State.Idle
 
-func print_state(state: State) -> void:
-	print("State: ", State.keys()[current_state])
 
 func _ready():
 	current_state = State.Idle
@@ -18,12 +19,13 @@ func _ready():
 
 func _physics_process(delta: float) -> void:
 	player_falling(delta)
-	player_idle(delta)
-	player_run(delta)
+	player_idle()
+	player_run()
+	player_jump(delta)
 	
 	move_and_slide()
 	player_animation()
-	print_state(current_state)
+	print("State: ", State.keys()[current_state])
 
 
 func player_falling(delta: float) -> void:
@@ -31,12 +33,15 @@ func player_falling(delta: float) -> void:
 		velocity.y += GRAVITY * delta
 
 
-func player_idle(delta: float) -> void:
+func player_idle() -> void:
 	if is_on_floor():
 		current_state = State.Idle
 
 
-func player_run(delta: float) -> void:
+func player_run() -> void:
+	if !is_on_floor():
+		return
+	
 	var direction = Input.get_axis("move_left","move_right")
 	
 	# If any direction input is registered
@@ -46,17 +51,26 @@ func player_run(delta: float) -> void:
 		# velocity.x = 0
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
-	if direction > 0:
-		animated_sprite_2d.flip_h = false
-	elif direction < 0:
-		animated_sprite_2d.flip_h = true
 	
-		
 	if direction != 0:
 		current_state = State.Run
-		print("State: ", State.keys()[current_state])
-		
+		if direction > 0:
+			animated_sprite_2d.flip_h = false
+		elif direction < 0:
+			animated_sprite_2d.flip_h = true
 
+
+
+func player_jump(delta: float) -> void:
+	if Input.is_action_just_pressed("jump"):
+		velocity.y = JUMP
+		current_state = State.Jump
+	
+	
+	if !is_on_floor() and current_state == State.Jump:
+		var direction = Input.get_axis("move_left", "move_right")
+		velocity.x += direction * JUMP_HORIZONTAL * delta
+	
 
 
 func player_animation():
@@ -64,3 +78,5 @@ func player_animation():
 		animated_sprite_2d.play("idle")
 	elif current_state == State.Run:
 		animated_sprite_2d.play("run")
+	elif  current_state == State.Jump:
+		animated_sprite_2d.play("jump")
